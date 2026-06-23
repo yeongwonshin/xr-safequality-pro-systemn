@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  api:
+    build: ../src/backend
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/xrsafequality
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: xrsafequality
+    ports:
+      - "5432:5432"
+  edge:
+    build: ../src/cv_service
+    ports:
+      - "8010:8010"
+  dashboard:
+    image: nginx:alpine
+    ports:
+      - "8080:80"

@@ -1,0 +1,18 @@
+flowchart LR
+    A[Camera Frame] --> B[Frame Sampler]
+    B --> C[Edge Inference]
+    C --> D[Detection Result]
+    D --> E[Condition Evaluator]
+    F[SOP Step Definition] --> E
+    G[Policy Thresholds] --> E
+    E --> H{Step Passed?}
+    H -->|Yes| I[Advance Step]
+    H -->|No| J[XR Warning]
+    H -->|Uncertain| K[Request Retake or Approval]
+    I --> L[Evidence Snapshot]
+    J --> L
+    K --> L
+    L --> M[Object Storage]
+    E --> N[Audit Event]
+    N --> O[PostgreSQL / Event Queue]
+    O --> P[Admin Dashboard]

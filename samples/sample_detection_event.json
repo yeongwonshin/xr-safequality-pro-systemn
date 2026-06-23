@@ -1,0 +1,34 @@
+{
+  "event_id": "90b2d5c2-824f-4e95-9f03-7f7361ff7b22",
+  "session_id": "5a31f145-8e7f-4c12-a93b-9d18a0b7e111",
+  "step_id": "ppe-check",
+  "timestamp": "2026-06-24T09:01:14+09:00",
+  "model_version": "ppe-detector-v1.4.2",
+  "policy_version": "lab-safety-policy-v2",
+  "observations": [
+    {
+      "object_class": "safety_goggles",
+      "state": "worn",
+      "confidence": 0.96,
+      "bbox": [
+        121,
+        44,
+        223,
+        141
+      ]
+    },
+    {
+      "object_class": "nitrile_gloves",
+      "state": "not_worn",
+      "confidence": 0.89,
+      "bbox": [
+        301,
+        355,
+        430,
+        480
+      ]
+    }
+  ],
+  "decision": "blocked",
+  "message": "니트릴 장갑 착용이 확인되지 않았습니다."
+}

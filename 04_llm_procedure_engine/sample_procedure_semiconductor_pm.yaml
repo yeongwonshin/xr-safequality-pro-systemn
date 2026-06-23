@@ -1,0 +1,49 @@
+procedure:
+  id: semiconductor-equipment-pm-001
+  name: 반도체 설비 정기 점검 절차
+  version: 1.0.0
+  industry: semiconductor
+  criticality: high
+  steps:
+    - id: loto-check
+      title: Lockout/Tagout 확인
+      type: visual_verification
+      blocking: true
+      conditions:
+        - operator: exists
+          object: lockout_tag
+          min_confidence: 0.92
+        - operator: state_is
+          object: power_indicator
+          state: off
+          min_confidence: 0.90
+    - id: panel-open
+      title: 패널 커버 개방 상태 확인
+      type: visual_verification
+      blocking: true
+      conditions:
+        - operator: state_is
+          object: panel_cover
+          state: open
+          min_confidence: 0.88
+    - id: valve-position
+      title: 밸브 위치 확인
+      type: visual_verification
+      blocking: true
+      conditions:
+        - operator: state_is
+          object: process_valve
+          state: closed
+          min_confidence: 0.90
+    - id: restore-state
+      title: 복구 상태 확인
+      type: visual_verification
+      blocking: true
+      conditions:
+        - operator: state_is
+          object: panel_cover
+          state: closed
+          min_confidence: 0.88
+        - operator: exists
+          object: completion_tag
+          min_confidence: 0.85

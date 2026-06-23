@@ -1,0 +1,69 @@
+procedure:
+  id: chem-lab-prep-001
+  name: 유해화학물질 실험 준비 절차
+  version: 1.0.0
+  industry: chemical_lab
+  criticality: high
+  owner_role: EHS_MANAGER
+  steps:
+    - id: identify-reagent
+      title: 시약 라벨 확인
+      type: visual_verification
+      blocking: true
+      required_evidence: image
+      conditions:
+        - operator: text_matches
+          object: chemical_label
+          field: reagent_name
+          expected_from: procedure.required_reagents
+          min_confidence: 0.90
+        - operator: exists
+          object: ghs_pictogram
+          min_confidence: 0.85
+      on_fail:
+        action: block
+        message: 시약 라벨 또는 위험 표지가 일치하지 않습니다.
+    - id: ppe-check
+      title: 보호구 착용 확인
+      type: visual_verification
+      blocking: true
+      conditions:
+        - operator: state_is
+          object: safety_goggles
+          state: worn
+          min_confidence: 0.92
+        - operator: state_is
+          object: nitrile_gloves
+          state: worn
+          min_confidence: 0.90
+        - operator: state_is
+          object: lab_coat
+          state: worn
+          min_confidence: 0.88
+      on_fail:
+        action: block
+        message: 필수 보호구가 확인되지 않았습니다.
+    - id: equipment-setup
+      title: 장비 세팅 확인
+      type: visual_verification
+      blocking: true
+      conditions:
+        - operator: state_is
+          object: fume_hood_sash
+          state: safe_height
+          min_confidence: 0.85
+        - operator: exists
+          object: waste_container
+          min_confidence: 0.85
+    - id: waste-disposal
+      title: 폐기 절차 확인
+      type: visual_verification
+      blocking: true
+      conditions:
+        - operator: exists
+          object: labeled_waste_container
+          min_confidence: 0.85
+        - operator: text_matches
+          object: waste_label
+          expected: procedure.waste_category
+          min_confidence: 0.85

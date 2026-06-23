@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant W as Worker
+    participant C as XR/Mobile Client
+    participant E as Edge Inference Gateway
+    participant P as Procedure Engine
+    participant A as Audit/Evidence Service
+    participant D as Dashboard
+
+    W->>C: Start inspection session
+    C->>P: Load SOP version and first step
+    P-->>C: Step conditions and thresholds
+    loop every sampled frame / evidence capture
+        C->>E: Send frame/snapshot
+        E-->>C: Detection results
+        C->>P: Submit observations
+        P-->>C: Step state: pass/fail/uncertain
+        alt fail
+            C-->>W: XR warning and correction guide
+        else uncertain
+            C-->>W: Retake or request supervisor approval
+        else pass
+            C-->>W: Advance to next step
+        end
+        P->>A: Write audit event
+        C->>A: Upload evidence snapshot
+        A-->>D: Update dashboard metrics
+    end

@@ -1,0 +1,121 @@
+openapi: 3.0.3
+info:
+  title: XR SafeQuality Pro API
+  version: 1.0.0
+paths:
+  /v1/procedures:
+    get:
+      summary: List approved procedures
+      responses:
+        '200':
+          description: Procedure list
+    post:
+      summary: Create draft procedure
+      responses:
+        '201':
+          description: Created
+  /v1/procedures/{procedure_id}/versions/{version}:
+    get:
+      summary: Get a procedure version
+      parameters:
+        - name: procedure_id
+          in: path
+          required: true
+          schema: { type: string }
+        - name: version
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Procedure detail }
+  /v1/inspection-sessions:
+    post:
+      summary: Start inspection session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartSessionRequest'
+      responses:
+        '201': { description: Session started }
+  /v1/inspection-sessions/{session_id}/observations:
+    post:
+      summary: Submit CV observations for current step
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObservationRequest'
+      responses:
+        '200': { description: Step evaluation result }
+  /v1/inspection-sessions/{session_id}/evidence:
+    post:
+      summary: Upload evidence metadata or signed upload request
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '201': { description: Evidence registered }
+  /v1/inspection-sessions/{session_id}/override:
+    post:
+      summary: Request or record supervisor override
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Override recorded }
+  /v1/dashboard/metrics:
+    get:
+      summary: Get safety and quality metrics
+      parameters:
+        - name: site_id
+          in: query
+          schema: { type: string }
+        - name: from
+          in: query
+          schema: { type: string, format: date-time }
+        - name: to
+          in: query
+          schema: { type: string, format: date-time }
+      responses:
+        '200': { description: Metrics }
+components:
+  schemas:
+    StartSessionRequest:
+      type: object
+      required: [procedure_id, site_id, asset_id]
+      properties:
+        procedure_id: { type: string }
+        site_id: { type: string }
+        asset_id: { type: string }
+        device_type: { type: string, enum: [mobile, tablet, xr, fixed_camera] }
+    ObservationRequest:
+      type: object
+      required: [step_id, model_version, observations]
+      properties:
+        step_id: { type: string }
+        model_version: { type: string }
+        policy_version: { type: string }
+        observations:
+          type: array
+          items:
+            type: object
+            properties:
+              object_class: { type: string }
+              state: { type: string }
+              confidence: { type: number }
+              bbox:
+                type: array
+                items: { type: number }
+              evidence_id: { type: string }

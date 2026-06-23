@@ -1,0 +1,40 @@
+{
+  "session_id": "5a31f145-8e7f-4c12-a93b-9d18a0b7e111",
+  "tenant": "ACME Research Lab",
+  "site": "Wet Lab A",
+  "procedure": "유해화학물질 실험 준비 절차",
+  "procedure_version": "1.0.0",
+  "worker": "worker-1024",
+  "started_at": "2026-06-24T09:00:00+09:00",
+  "completed_at": "2026-06-24T09:07:35+09:00",
+  "result": "completed_with_warning",
+  "steps": [
+    {
+      "step_id": "identify-reagent",
+      "result": "pass",
+      "evidence_count": 1
+    },
+    {
+      "step_id": "ppe-check",
+      "result": "pass_after_retake",
+      "warning": "nitrile_gloves initially missing",
+      "evidence_count": 2
+    },
+    {
+      "step_id": "equipment-setup",
+      "result": "pass",
+      "evidence_count": 1
+    },
+    {
+      "step_id": "waste-disposal",
+      "result": "pass",
+      "evidence_count": 1
+    }
+  ],
+  "model_versions": [
+    "ppe-detector-v1.4.2",
+    "label-ocr-v0.9.1"
+  ],
+  "policy_version": "lab-safety-policy-v2",
+  "audit_hash": "sha256:example"
+}

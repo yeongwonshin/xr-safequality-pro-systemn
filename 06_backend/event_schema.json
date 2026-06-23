@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XR SafeQuality Audit Event",
+  "type": "object",
+  "required": [
+    "event_id",
+    "tenant_id",
+    "event_type",
+    "timestamp",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "tenant_id": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "step_id": {
+      "type": "string"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "SESSION_STARTED",
+        "OBSERVATION_RECEIVED",
+        "STEP_PASSED",
+        "STEP_FAILED",
+        "STEP_BLOCKED",
+        "OVERRIDE_REQUESTED",
+        "OVERRIDE_APPROVED",
+        "EVIDENCE_UPLOADED",
+        "SESSION_COMPLETED",
+        "POLICY_CHANGED"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actor": {
+      "type": "string"
+    },
+    "sop_version": {
+      "type": "string"
+    },
+    "model_version": {
+      "type": "string"
+    },
+    "policy_version": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object"
+    }
+  }
+}

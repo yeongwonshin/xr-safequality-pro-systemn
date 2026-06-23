@@ -1,0 +1,46 @@
+procedure:
+  id: battery-module-assembly-001
+  name: 배터리 모듈 조립 품질 게이트
+  version: 1.0.0
+  industry: battery_manufacturing
+  criticality: high
+  steps:
+    - id: esd-check
+      title: ESD 보호 확인
+      type: visual_verification
+      blocking: true
+      conditions:
+        - operator: state_is
+          object: esd_wrist_strap
+          state: worn
+          min_confidence: 0.90
+        - operator: state_is
+          object: nitrile_gloves
+          state: worn
+          min_confidence: 0.88
+    - id: cell-orientation
+      title: 셀 방향 확인
+      type: visual_verification
+      blocking: true
+      conditions:
+        - operator: state_is
+          object: battery_cell
+          state: correct_orientation
+          min_confidence: 0.92
+    - id: screw-presence
+      title: 나사 체결 누락 확인
+      type: visual_verification
+      blocking: true
+      conditions:
+        - operator: exists_at_all_positions
+          object: screw
+          expected_positions_ref: fixture_template_v3
+          min_confidence: 0.88
+      on_fail:
+        action: rework_required
+        message: 나사 누락 또는 위치 오류가 감지되었습니다.
+    - id: qa-approval
+      title: QA 최종 승인
+      type: supervisor_approval
+      blocking: true
+      approver_role: QA_INSPECTOR
